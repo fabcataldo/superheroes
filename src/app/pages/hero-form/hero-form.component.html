@@ -1,37 +1,39 @@
-<div class="container d-flex justify-content-center mt-5 background">
-    <form [formGroup]="heroForm" class="row g-3 needs-validation" novalidate (submit)="onSubmit($event)">
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">name </label>
-            <input type="text" class="form-control" id="exampleFormControlInput1"
-                formControlName="name"
-                [ngClass]="{'is-invalid' : hasErrors('name', 'required') || hasErrors('name', 'name')}">
-            @if (hasErrors('name', 'required')) {
-            <span class="text-danger">You have to complete this field</span>
-            }
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Description </label>
-            <input type="text" class="form-control" id="exampleFormControlInput1"
-                formControlName="description"
-                [ngClass]="{'is-invalid' : hasErrors('description', 'required') || hasErrors('description', 'name')}">
-            @if (hasErrors('description', 'required')) {
-            <span class="text-danger">You have to complete this field</span>
-            }
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Power</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="power"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Weight</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="weight"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Years</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="years"></textarea>
-        </div>
-        <div class="col-12">
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </div>
-    </form>
-</div>
+<app-loading [loading]="loading()">
+    <div class="container d-flex justify-content-center mt-5 background">
+        <form [formGroup]="heroForm" class="row g-3 needs-validation" novalidate (submit)="onSubmit($event)">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">name </label>
+                <input type="text" class="form-control" id="exampleFormControlInput1"
+                    formControlName="name"
+                    [ngClass]="{'is-invalid' : hasErrors('name', 'required') || hasErrors('name', 'name')}">
+                @if (hasErrors('name', 'required')) {
+                    <span class="text-danger">You have to complete this field</span>
+                }
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Description </label>
+                <textarea type="text" class="form-control" id="exampleFormControlInput1"
+                    formControlName="description"
+                    [ngClass]="{'is-invalid' : hasErrors('description', 'required') || hasErrors('description', 'name')}"></textarea>
+                @if (hasErrors('description', 'required')) {
+                    <span class="text-danger">You have to complete this field</span>
+                }
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Power</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="power"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Weight</label>
+                <input type="number" class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="weight"/>
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Years</label>
+                <input type="number" class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="years"/>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</app-loading>

@@ -1,13 +1,14 @@
-<div class="container d-flex justify-content-center mt-5">
-    <div class="card" style="width: 10rem;">
-        @defer(when hero() !== undefined){
+<button mat-button class="btn btn-light" (click)="goBack()">
+    ← Volver
+</button>
+<app-loading [loading]="loading()" class="justify-content-center">
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="card" style="width: 10rem;" *ngIf="hero()">
             <h1>{{hero()!!.name}}</h1>
             <h1>{{hero()!!.description}}</h1>
             <h1>{{hero()!!.power}}</h1>
             <h1>{{hero()!!.weight}}</h1>
             <h1>{{hero()!!.years}}</h1>
-        } @error {
-            <p style="color: red;"> Hero Not Found!</p>
-        }
+        </div>
     </div>
-</div>
+</app-loading>

@@ -1,26 +1,40 @@
-<table mat-table [dataSource]="this.heroService.getHeroes()()" matSort class="mat-elevation-z8">
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="power">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Power </th>
-        <td mat-cell *matCellDef="let element"> {{element.power}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
-        <td mat-cell *matCellDef="let element">
-            <button mat-icon-button aria-label="detail button" (click)="goToDetailPage(element)">
-                <mat-icon>details</mat-icon>
-            </button>
-            <button mat-icon-button aria-label="edit button" (click)="goToEditPage(element)">
-                <mat-icon>edit</mat-icon>
-            </button>
-        </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+<app-loading [loading]="loading()">
+    <div class="mt-2 container justify-content-center background">
+        <button class="btn btn-primary" type="submit" (click)="goToCreateHero()">Add Hero</button>
+        <table mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by name"> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="power">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by power"> Power </th>
+                <td mat-cell *matCellDef="let element"> {{element.power}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button aria-label="detail button" (click)="goToDetailPage(element.id)">
+                        <mat-icon>dehaze</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="edit button" (click)="goToEditPage(element.id)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="edit button" (click)="showDeleteModal(element.id)">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                        showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+</app-loading>

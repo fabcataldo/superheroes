@@ -1,17 +1,20 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeroService } from '../../services/hero.service';
 import { Hero } from '../../models/hero.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
+import { LoadingComponent } from '../../components/loading/loading.component';
 
 @Component({
   selector: 'app-hero-form',
-  imports: [CommonModule, ReactiveFormsModule, NgClass],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, NgClass, LoadingComponent],
   templateUrl: './hero-form.component.html',
   styleUrl: './hero-form.component.scss'
 })
-export class HeroFormComponent implements OnInit {
+export class HeroFormComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _heroService = inject(HeroService);
   private _router = inject(Router);
@@ -19,11 +22,13 @@ export class HeroFormComponent implements OnInit {
   hero = signal<Hero | undefined>(undefined);
 
   heroForm!: FormGroup;
+  loading = signal(false);
+  private subscriptions$ = new Subject<void>();
 
   constructor(private formBuilder: FormBuilder) {
-    effect(()=> {
-      this._router.navigate([`/`]);
-    })
+    // effect(()=> {
+    //   this._router.navigate([`/`]);
+    // })
 
     //FALTA LA EDICIÓN
     this.heroForm = this.formBuilder.group({
@@ -35,25 +40,60 @@ export class HeroFormComponent implements OnInit {
     })
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions$.next();
+    this.subscriptions$.complete();
+  }
+
   ngOnInit(): void {
     this._route.params.subscribe(params => {
-      const currentHero = this._heroService.getHeroes()().find(hero => hero.id === Number(params['id']));
-      console.log(params)
-      if (currentHero) {
-        this.hero.set(currentHero);
+      const idHero = Number(params['id']);
+      if(idHero){
+        this.loading.set(true);
+        this._heroService.getHero(idHero)
+        .pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+          const hero = res;
+          if (hero) {
+            this.hero.set(res);
+
+            this.heroForm.setValue({
+              name: hero.name,
+              power: hero.power,
+              weight: hero.weight,
+              years: hero.years,
+              description: hero.description
+            });
+            this.loading.set(false);
+          }
+        });
       }
     });
   }
 
   onSubmit(event: Event){
     event.preventDefault();
+    console.log('this.heroForm')
+    console.log(this.heroForm)
+    console.log(this.hero())
     if (this.heroForm.valid){
-      this._heroService.addHero(this.heroForm.value);
+      if(this.hero()){
+        this._heroService.updateHero({...this.heroForm.value, id: this.hero()?.id}).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+          this.navigateToRoot();
+        });
+      } else {
+        this._heroService.addHero(this.heroForm.value).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+          this.navigateToRoot();
+        });
+      }
     }
     else {
       this.heroForm.markAllAsTouched();
       console.error('Invalid form');
     }
+  }
+
+  private navigateToRoot() {
+    this._router.navigate([`/`]);
   }
 
   hasErrors(field: string, typeError: string) {
