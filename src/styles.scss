@@ -26,3 +26,14 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.dark-mode {
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+}
+
+.general-styles {
+  background-color: black !important;
+  color: white;
+}
