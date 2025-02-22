@@ -6,11 +6,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-hero-detail',
   standalone: true,
-  imports: [LoadingComponent, CommonModule],
+  imports: [LoadingComponent, CommonModule, MatCardModule],
   templateUrl: './hero-detail.component.html',
   styleUrl: './hero-detail.component.scss'
 })
