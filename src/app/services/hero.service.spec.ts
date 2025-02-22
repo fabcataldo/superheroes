@@ -55,4 +55,11 @@ describe('HeroService', () => {
     tick(1000);
     expect(result).toEqual(heroes[0]);
   }));
+
+  it('should getFilteredHeroesByText() work, getting heroes filtering by text=sup ', fakeAsync(() => {
+    let result: Hero[] = [];
+    service.getFilteredHeroesByText('sup').subscribe(data => result = data);
+    tick(1000);
+    expect(result).toEqual([heroes[1]]);
+  }));
 });

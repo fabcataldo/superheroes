@@ -83,4 +83,14 @@ export class HeroService {
       })
     );
   }
+
+  getFilteredHeroesByText(text: string): Observable<Hero[]> {
+    return of(text).pipe(
+      delay(1000),
+      switchMap(() => {
+        const localHeroes = this.heroes();
+        return of(localHeroes.filter(hero => hero.name.toLocaleLowerCase().includes(text)));
+      })
+    );
+  }
 }
