@@ -15,6 +15,6 @@ export const heroes: Hero[] = [
         power: 'Super strength',
         years: 40,
         weight: 75,
-        description: 'Lorem ipsum dolor sit amet...'
+        description: 'Lorem ipsum dolor sit amet'
     }
 ];
