@@ -15,9 +15,9 @@ import { LoadingComponent } from '../../components/loading/loading.component';
   styleUrl: './hero-form.component.scss'
 })
 export class HeroFormComponent implements OnInit, OnDestroy {
-  private _route = inject(ActivatedRoute);
-  private _heroService = inject(HeroService);
-  private _router = inject(Router);
+  public route = inject(ActivatedRoute);
+  public heroService = inject(HeroService);
+  public router = inject(Router);
 
   hero = signal<Hero | undefined>(undefined);
 
@@ -26,11 +26,6 @@ export class HeroFormComponent implements OnInit, OnDestroy {
   private subscriptions$ = new Subject<void>();
 
   constructor(private formBuilder: FormBuilder) {
-    // effect(()=> {
-    //   this._router.navigate([`/`]);
-    // })
-
-    //FALTA LA EDICIÓN
     this.heroForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       power: [''],
@@ -46,11 +41,11 @@ export class HeroFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       const idHero = Number(params['id']);
       if(idHero){
         this.loading.set(true);
-        this._heroService.getHero(idHero)
+        this.heroService.getHero(idHero)
         .pipe(takeUntil(this.subscriptions$)).subscribe(res => {
           const hero = res;
           if (hero) {
@@ -72,16 +67,14 @@ export class HeroFormComponent implements OnInit, OnDestroy {
 
   onSubmit(event: Event){
     event.preventDefault();
-    console.log('this.heroForm')
-    console.log(this.heroForm)
-    console.log(this.hero())
+
     if (this.heroForm.valid){
       if(this.hero()){
-        this._heroService.updateHero({...this.heroForm.value, id: this.hero()?.id}).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+        this.heroService.updateHero({...this.heroForm.value, id: this.hero()?.id}).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
           this.navigateToRoot();
         });
       } else {
-        this._heroService.addHero(this.heroForm.value).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+        this.heroService.addHero(this.heroForm.value).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
           this.navigateToRoot();
         });
       }
@@ -93,7 +86,7 @@ export class HeroFormComponent implements OnInit, OnDestroy {
   }
 
   private navigateToRoot() {
-    this._router.navigate([`/`]);
+    this.router.navigate([`/`]);
   }
 
   hasErrors(field: string, typeError: string) {

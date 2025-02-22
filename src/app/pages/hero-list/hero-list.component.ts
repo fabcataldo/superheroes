@@ -26,23 +26,20 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort | null = null;
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
-  private _router = inject(Router);
-  private _dialog = inject(MatDialog);
+  public router = inject(Router);
+  dialog = inject(MatDialog);
   heroService: HeroService = inject(HeroService);
   localHeroes = signal<Hero[]>([]);
   displayedColumns: string[] = ['name', 'power', 'actions'];
   loading = signal(true);
-  private subscriptions$ = new Subject<void>();
+  subscriptions$ = new Subject<void>();
   dataSource = new MatTableDataSource<Hero>([]);
 
   ngOnInit(): void {
-    console.log('ngon init hero-lis')
-    console.log(this.loading())
     this.loading.set(true);
     this.heroService.getHeroes().pipe(takeUntil(this.subscriptions$)).subscribe(res => {
       this.localHeroes.set(res);
       this.updateTableDataSource();
-
       this.loading.set(false);
     });
   }
@@ -59,15 +56,15 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToEditPage(idHero: number){
-    this._router.navigate([`/create-edit`, idHero]);
+    this.router.navigate([`/create-edit`, idHero]);
   }
 
   goToDetailPage(idHero: number) {
-    this._router.navigate([`/detail`, idHero]);
+    this.router.navigate([`/detail`, idHero]);
   }
 
   showDeleteModal(idHero: number) {
-    const dialogRef = this._dialog.open(HeroRemovingModalComponent, {
+    const dialogRef = this.dialog.open(HeroRemovingModalComponent, {
       data: {},
     });
 
@@ -109,10 +106,10 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToCreateHero() {
-    this._router.navigate([`/create-edit`]);
+    this.router.navigate([`/create-edit`]);
   }
 
-  private updateTableDataSource() {
+  updateTableDataSource() {
     this.dataSource = new MatTableDataSource(this.localHeroes());
   }
 

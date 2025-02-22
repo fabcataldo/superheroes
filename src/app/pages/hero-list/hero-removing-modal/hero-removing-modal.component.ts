@@ -21,15 +21,15 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroRemovingModalComponent {
-  private _dialogRef = inject(MatDialogRef<HeroRemovingModalComponent>);
+  public dialogRef = inject(MatDialogRef<HeroRemovingModalComponent>);
 
   // 🔥 Método para cerrar el modal con confirmación
   confirmDelete(): void {
-    this._dialogRef.close(true); // Devuelve `true` para confirmar la eliminación
+    this.dialogRef.close(true); // Devuelve `true` para confirmar la eliminación
   }
 
   // 🔥 Método para cerrar el modal sin acción
   cancel(): void {
-    this._dialogRef.close(false); // Devuelve `false` para cancelar
+    this.dialogRef.close(false); // Devuelve `false` para cancelar
   }
 }
