@@ -1,5 +1,9 @@
+:host{
+    --spinner-width: 100px;
+    --spinner-height: 100px;
+}
 .custom-spinner {
-    width: 100px !important;
-    height: 100px !important;
+    width: var(--spinner-width) !important;
+    height: var(--spinner-height) !important;
     --mat-sys-primary: white !important;
 }

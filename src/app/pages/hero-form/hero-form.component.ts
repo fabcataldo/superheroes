@@ -27,6 +27,7 @@ export class HeroFormComponent implements OnInit, OnDestroy {
   heroForm!: FormGroup;
   loading = signal(false);
   private subscriptions$ = new Subject<void>();
+  loadingSubmitButton = signal(false);
 
   constructor(private formBuilder: FormBuilder) {
     this.heroForm = this.formBuilder.group({
@@ -70,14 +71,17 @@ export class HeroFormComponent implements OnInit, OnDestroy {
 
   onSubmit(event: Event){
     event.preventDefault();
+    this.loadingSubmitButton.set(true);
 
     if (this.heroForm.valid){
       if(this.hero()){
         this.heroService.updateHero({...this.heroForm.value, id: this.hero()?.id}).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+          this.loadingSubmitButton.set(false);
           this.navigateToRoot();
         });
       } else {
         this.heroService.addHero(this.heroForm.value).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+          this.loadingSubmitButton.set(false);
           this.navigateToRoot();
         });
       }
