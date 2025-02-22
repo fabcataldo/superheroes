@@ -1,7 +1,8 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appUppercase]'
+  selector: '[appUppercase]',
+  standalone: true
 })
 
 //custom atribute directive type
