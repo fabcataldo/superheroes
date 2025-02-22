@@ -31,12 +31,10 @@ export class HeroDetailComponent implements OnInit, OnDestroy {
       this.heroService.getHero(Number(params['id']))
         .pipe(takeUntil(this.subscriptions$)).subscribe({
           next: (res) => {
-            console.log('Héroe recibido:', res);
             this.hero.set(res);
             this.loading.set(false);
           },
           error: (err) => {
-            console.error('Error al obtener el héroe:', err);
             this.loading.set(false);
           }
         });
@@ -50,9 +48,9 @@ export class HeroDetailComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     if (window.history.length > 1) {
-      this.location.back(); // 🔥 Vuelve a la página anterior si hay historial
+      this.location.back();
     } else {
-      this.router.navigate(['/']); // 🔥 Si no hay historial, vuelve a la lista de héroes
+      this.router.navigate(['/']);
     }
   }
 }

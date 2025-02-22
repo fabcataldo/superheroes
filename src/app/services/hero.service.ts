@@ -1,29 +1,18 @@
 import { Injectable, signal } from '@angular/core';
 import { Hero } from '../models/hero.model';
 import { delay, Observable, of, switchMap, throwError } from 'rxjs';
+import { heroes } from '../utils/testing/consts/ExampleHeroes';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroService {
-  private heroes = signal<Hero[]>([
-    { 
-      id: 1,
-      name: 'Spiderman',
-      power: 'Spider-sense', 
-      years: 35,
-      weight: 80,
-      description: 'Lorem ipsum dolor sit amet...' 
-    },
-    { 
-      id: 2,
-      name: 'Superman',
-      power: 'Super strength',
-      years: 40,
-      weight: 75,
-      description: 'Lorem ipsum dolor sit amet...' 
-    }
-  ]);
+  private heroes = signal<Hero[]>(heroes);
+
+  get serviceHeroes() {
+    return this.heroes();
+  }
 
   getHeroes(): Observable<Hero[]> {
     return of(this.heroes()).pipe(
@@ -67,7 +56,6 @@ export class HeroService {
   deleteHero(id: number): Observable<Hero> {
     return of(id).pipe(
       delay(1000), // Simula el retraso del backend
-      // Verificar si el héroe existe antes de actualizar
       switchMap(() => {
         const heroOnHeroes = this.heroes().find(h => h.id === id);
         if (!heroOnHeroes) {

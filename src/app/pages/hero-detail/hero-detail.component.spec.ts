@@ -4,11 +4,13 @@ import { HeroDetailComponent } from './hero-detail.component';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { HeroService } from '../../services/hero.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FakeRouter } from '../../utils/testing/FakeRouter';
 import { FakeActivatedRoute } from '../../utils/testing/FakeActiveRoute';
 import { FakeLocation } from '../../utils/testing/FakeLocation';
+import { from, of } from 'rxjs';
+import { heroes } from '../../utils/testing/consts/ExampleHeroes';
 
 describe('HeroDetailComponent', () => {
   let component: HeroDetailComponent;
@@ -24,7 +26,12 @@ describe('HeroDetailComponent', () => {
       providers: [
         HeroService,
         { provide: Router, useClass: FakeRouter },
-        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+        { provide: ActivatedRoute, useValue: {
+          // Si tu componente usa el observable params:
+          params: of({ id: '1' }),
+          // O si usa el snapshot:
+          snapshot: { paramMap: convertToParamMap({ id: '1' }) }
+        } },
         { provide: Location, useClass: FakeLocation}
       ]
     })
@@ -32,6 +39,7 @@ describe('HeroDetailComponent', () => {
 
     fixture = TestBed.createComponent(HeroDetailComponent);
     component = fixture.componentInstance;
+    spyOn(component.heroService, 'getHero').and.callFake(() => from([heroes[0]]));
     fixture.detectChanges();
   });
 
@@ -39,6 +47,13 @@ describe('HeroDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  //caso de pruebas:
-  //que se busca un hero con id tanto, y en el signal aparece el hero posta
+  it('should have route param id equal to "1"', () => {
+    expect(component.route.snapshot.paramMap.get('id')).toEqual('1');
+
+    component.route.params.subscribe(params => {
+      expect(params['id']).toEqual('1');
+      expect(component.heroService.getHero).toHaveBeenCalledWith(1);
+      expect(component.hero()?.id).toEqual(1);
+    });
+  });
 });

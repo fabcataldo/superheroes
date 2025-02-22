@@ -113,8 +113,8 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource = new MatTableDataSource(this.localHeroes());
   }
 
-  private compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  private compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
+    return (a!! < b!! ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
 }

@@ -6,11 +6,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule, NgClass } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { LoadingComponent } from '../../components/loading/loading.component';
+import { Location } from '@angular/common';
+import { UppercaseDirective } from '../../utils/directives/uppercase.directive';
 
 @Component({
   selector: 'app-hero-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgClass, LoadingComponent],
+  imports: [CommonModule, ReactiveFormsModule, NgClass, LoadingComponent, UppercaseDirective],
   templateUrl: './hero-form.component.html',
   styleUrl: './hero-form.component.scss'
 })
@@ -18,6 +20,7 @@ export class HeroFormComponent implements OnInit, OnDestroy {
   public route = inject(ActivatedRoute);
   public heroService = inject(HeroService);
   public router = inject(Router);
+  public location = inject(Location);
 
   hero = signal<Hero | undefined>(undefined);
 
@@ -91,5 +94,13 @@ export class HeroFormComponent implements OnInit, OnDestroy {
 
   hasErrors(field: string, typeError: string) {
     return this.heroForm.get(field)?.hasError(typeError) && this.heroForm.get(field)?.touched;
+  }
+
+  goBack(): void {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

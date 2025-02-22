@@ -63,8 +63,8 @@ describe('HeroListComponent', () => {
 
   it('should obtain and save heroes data, and fill the table, validating that has data', () => {
     expect(component.localHeroes().length).toBeGreaterThan(0); 
-    expect(component.dataSource.data.length).toBeGreaterThan(0);
     expect(component.updateTableDataSource).toHaveBeenCalled();
+    expect(component.dataSource.data.length).toBeGreaterThan(0);
   });
 
   it('should validate that, with a click in hero detail button, navigates to hero detail page', () => {
