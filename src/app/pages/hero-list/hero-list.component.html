@@ -1,14 +1,15 @@
 <app-loading [loading]="loading()">
     <div class="mt-2 container justify-content-center background">
-        <div class="d-flex mb-3 mt-4">
+        <div class="d-flex mt-4">
             <div class="col-2">
                 <button class="btn btn-primary" type="submit" (click)="goToCreateHero()">Add Hero</button>
             </div>
-            <div class="col-3">
+            
+            <div class="col-3 custom-search-input">
                 <input #searchInput type="text" class="form-control" id="exampleFormControlInput1"
                 [value]="heroSearched()">
+                <mat-icon class="search-icon">search</mat-icon>
             </div>
-            
         </div>
         
         <table mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
