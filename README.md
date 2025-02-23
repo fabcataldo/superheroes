@@ -1,59 +1,32 @@
-# Superheroes
+# Superhero Angular App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.8.
+Superhero Angular App es una aplicación en Angular 18 diseñada para gestionar información sobre superhéroes. Se ejecuta en un entorno Dockerizado para facilitar la configuración y despliegue.
 
-## Development server
+## Características
+- Aplicación frontend desarrollada con **Angular 18**.
+- Contenedor **Docker** para ejecutar la app sin necesidad de configuraciones locales.
+- **Live Reload** habilitado con volúmenes en Docker.
+- Accesible en `localhost:4200` desde cualquier navegador.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## 📦 Instalación y Configuración
+
+### 1️ **Requisitos previos**
+Asegúrate de tener instalados:
+- [Docker](https://www.docker.com/get-started) 
+- [Docker Compose](https://docs.docker.com/compose/install/) 
+
+### 2️ **Clonar el repositorio**
+```sh
+git clone https://github.com/tu-usuario/superhero-angular-app.git
+cd superhero-angular-app
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+### 3 **Ejecución**
+```sh
+docker-compose up --build
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+### **Si quieres "apagar" el contenedor del frontend: **
+```sh
+docker-compose down
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
