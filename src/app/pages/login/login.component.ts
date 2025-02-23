@@ -1,11 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { LoadingComponent } from '../../components/loading/loading.component';
+import { CommonModule, NgClass } from '@angular/common';
+import { AuthService } from '../../services/auth-service/auth-service.service';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, NgClass, LoadingComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
+  public router = inject(Router);
+  public authService = inject(AuthService);
 
+  loginForm!: FormGroup;
+  private subscriptions$ = new Subject<void>();
+  loadingLoginButton = signal(false);
+
+  constructor(private formBuilder: FormBuilder) {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.next();
+    this.subscriptions$.complete();
+  }
+
+  onSubmit(event: Event) {
+    event.preventDefault();
+    this.loadingLoginButton.set(true);
+
+    this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
+      .pipe(takeUntil(this.subscriptions$)).subscribe({
+        next: (res) => {
+          this.router.navigate(['/'])
+          this.loadingLoginButton.set(false);
+        },
+        error: (err) => {
+          console.log(err)
+          this.loadingLoginButton.set(false);
+        }
+      });
+  }
 }
