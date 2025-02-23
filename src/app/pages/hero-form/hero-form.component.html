@@ -8,8 +8,9 @@
                 <label for="exampleFormControlInput1" class="form-label">name </label>
                 <input type="text" class="form-control" id="exampleFormControlInput1"
                     formControlName="name" appUppercase
-                    [ngClass]="{'is-invalid' : hasErrors('name', 'required') || hasErrors('name', 'name')}">
-                @if (hasErrors('name', 'required')) {
+                    [ngClass]="{'is-invalid' : heroForm.controls['name'].hasError('required')
+                        && heroForm.controls['name'].touched}">
+                @if (heroForm.controls['name'].hasError('required')) {
                     <span class="text-danger">You have to complete this field</span>
                 }
             </div>
@@ -17,8 +18,10 @@
                 <label for="exampleFormControlInput1" class="form-label">Description </label>
                 <textarea type="text" class="form-control" id="exampleFormControlInput1"
                     formControlName="description"
-                    [ngClass]="{'is-invalid' : hasErrors('description', 'required') || hasErrors('description', 'name')}"></textarea>
-                @if (hasErrors('description', 'required')) {
+                    [ngClass]="{'is-invalid' : heroForm.controls['description'].hasError('required')
+                        && heroForm.controls['description'].touched
+                    }"></textarea>
+                @if (heroForm.controls['description'].hasError('required')) {
                     <span class="text-danger">You have to complete this field</span>
                 }
             </div>
