@@ -1,9 +1,14 @@
 :host{
     --spinner-width: 100px;
     --spinner-height: 100px;
+    --min-height-spinner-container: 90vh;
 }
 .custom-spinner {
     width: var(--spinner-width) !important;
     height: var(--spinner-height) !important;
     --mat-sys-primary: white !important;
+}
+
+.main-container{
+    min-height: var(--min-height-spinner-container);
 }
