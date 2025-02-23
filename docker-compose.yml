@@ -1,0 +1,34 @@
+#docker-compose version
+version: '3.8'
+
+#containers to be executed
+services:
+  #name of my service: Superhero Angular App
+  superhero-angular-app:
+    #name of the container that will load the frontend
+    container_name: superhero-app-container
+
+    #image must be built from where Dockerfile is, that is in the root directory
+    build: .
+
+    #enables port from local 4200 to container port 4200
+    #with this, I can do localhost:4200 from my browser
+    ports:
+      - "4200:4200"
+
+    #sincronize files between host (localhost, this case) and container
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+
+    #first command when container loads app
+    #I use 0.0.0.0 because of Angular in development environment, only listens on localhost
+    #in this case, inside the container, and does not allow external conections
+    #this is NOT allowed in production
+    command: "npm start -- --host 0.0.0.0 --disable-host-check"
+
+    #maintains container open forever
+    stdin_open: true
+
+    #enables interactive terminal, necesary for ng serve
+    tty: true
