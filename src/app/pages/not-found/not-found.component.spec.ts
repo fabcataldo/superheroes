@@ -7,7 +7,7 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { HeroService } from '../../services/hero.service';
+import { HeroService } from '../../services/hero-service/hero.service';
 import { NotFoundComponent } from './not-found.component';
 
 describe('NotFoundComponent', () => {
