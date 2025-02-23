@@ -4,7 +4,7 @@ import { CommonModule, NgClass } from '@angular/common';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {  ActivatedRoute, Router } from '@angular/router';
-import { HeroService } from '../../services/hero.service';
+import { HeroService } from '../../services/hero-service/hero.service';
 import { FakeRouter } from '../../utils/testing/FakeRouter';
 import { FakeActivatedRoute } from '../../utils/testing/FakeActiveRoute';
 import { heroes } from '../../utils/testing/consts/ExampleHeroes';
