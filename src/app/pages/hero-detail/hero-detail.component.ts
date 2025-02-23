@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HeroService } from '../../services/hero.service';
+import { HeroService } from '../../services/hero-service/hero.service';
 import { Hero } from '../../models/hero.model';
 import { Subject, takeUntil } from 'rxjs';
 import { LoadingComponent } from '../../components/loading/loading.component';

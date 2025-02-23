@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeroDetailComponent } from './hero-detail.component';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../components/loading/loading.component';
-import { HeroService } from '../../services/hero.service';
+import { HeroService } from '../../services/hero-service/hero.service';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FakeRouter } from '../../utils/testing/FakeRouter';

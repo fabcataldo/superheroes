@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, inject, model, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
-import { HeroService } from '../../services/hero.service';
+import { HeroService } from '../../services/hero-service/hero.service';
 import {MatButtonModule} from '@angular/material/button';
 import { Hero } from '../../models/hero.model';
 import { Router } from '@angular/router';

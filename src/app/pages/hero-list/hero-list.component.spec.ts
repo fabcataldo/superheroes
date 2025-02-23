@@ -9,7 +9,7 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { HeroService } from '../../services/hero.service';
+import { HeroService } from '../../services/hero-service/hero.service';
 import { from, Subject } from 'rxjs';
 import { HeroRemovingModalComponent } from './hero-removing-modal/hero-removing-modal.component';
 import { heroes } from '../../utils/testing/consts/ExampleHeroes';

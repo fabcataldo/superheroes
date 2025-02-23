@@ -1,6 +1,6 @@
 import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HeroService } from '../../services/hero.service';
+import { HeroService } from '../../services/hero-service/hero.service';
 import { Hero } from '../../models/hero.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
@@ -50,8 +50,9 @@ export class HeroFormComponent implements OnInit, OnDestroy {
       if(idHero){
         this.loading.set(true);
         this.heroService.getHero(idHero)
-        .pipe(takeUntil(this.subscriptions$)).subscribe(res => {
-          const hero = res;
+        .pipe(takeUntil(this.subscriptions$)).subscribe({
+          next: (res) => {
+            const hero = res;
           if (hero) {
             this.hero.set(res);
 
@@ -62,6 +63,10 @@ export class HeroFormComponent implements OnInit, OnDestroy {
               years: hero.years,
               description: hero.description
             });
+            this.loading.set(false);
+          }
+          },
+          error: (err) => {
             this.loading.set(false);
           }
         });
@@ -94,10 +99,6 @@ export class HeroFormComponent implements OnInit, OnDestroy {
 
   private navigateToRoot() {
     this.router.navigate([`/`]);
-  }
-
-  hasErrors(field: string, typeError: string) {
-    return this.heroForm.get(field)?.hasError(typeError) && this.heroForm.get(field)?.touched;
   }
 
   goBack(): void {
