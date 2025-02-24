@@ -1,43 +1,47 @@
-<div class="col-12 d-flex justify-content-center mt-4">
-    <h1>¡Bienvenido!</h1>
-</div>
 <div class="container d-flex justify-content-center mt-4 background">
+    <div class="row">
+        <div class="col-6 welcome-label-container">
+            <h1>¡Bienvenido!</h1>
+        </div>
+        <div class="col-6">
+            <form [formGroup]="loginForm" class="row g-3 needs-validation" novalidate (submit)="onSubmit($event)">
+                <div class="mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" formControlName="email"
+                        appUppercase [ngClass]="{'is-invalid' : 
+                        (loginForm.controls['email'].hasError('required')
+                        && loginForm.controls['email'].touched)
+                    }">
+                    @if (loginForm.controls['email'].hasError('required') && loginForm.controls['password'].touched) {
+                    <span class="text-danger">You have to complete this field</span>
+                    }
+                    @if (loginForm.controls['email'].hasError('email')) {
+                    <span class="text-danger">Invalid email</span>
+                    }
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Password </label>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" formControlName="password"
+                        [ngClass]="{'is-invalid' : 
+                    loginForm.controls['password'].hasError('required')
+                    && loginForm.controls['password'].touched
+                    }" />
+                    @if (loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched)
+                    {
+                    <span class="text-danger">You have to complete this field</span>
+                    }
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-3 mb-4">
+                    <button class="btn btn-primary login-btn" type="submit">
+                        <app-loading [loading]="loadingLoginButton()" class="custom-spinner">
+                            <span>
+                                Login
+                            </span>
+                        </app-loading>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <form [formGroup]="loginForm" class="row g-3 needs-validation" novalidate (submit)="onSubmit($event)">
-        <div class="mb-2">
-            <label for="exampleFormControlInput1" class="form-label">Email</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1"
-            formControlName="email" appUppercase
-                [ngClass]="{'is-invalid' : 
-                    (loginForm.controls['email'].hasError('required')
-                    && loginForm.controls['email'].touched)
-                }">
-            @if (loginForm.controls['email'].hasError('required') && loginForm.controls['password'].touched) {
-                <span class="text-danger">You have to complete this field</span>
-            }
-            @if (loginForm.controls['email'].hasError('email')) {
-                <span class="text-danger">Invalid email</span>
-            }
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Password </label>
-            <input type="password" class="form-control" id="exampleFormControlInput1" formControlName="password"
-                [ngClass]="{'is-invalid' : 
-                loginForm.controls['password'].hasError('required')
-                && loginForm.controls['password'].touched
-                }"/>
-            @if (loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched) {
-            <span class="text-danger">You have to complete this field</span>
-            }
-        </div>
-        <div class="col-12 d-flex justify-content-center mt-3 mb-4">
-            <button class="btn btn-primary" type="submit">
-                <app-loading [loading]="loadingLoginButton()" class="custom-spinner">
-                    <span>
-                        Login
-                    </span>
-                </app-loading>
-            </button>
-        </div>
-    </form>
 </div>

@@ -5,6 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { CommonModule, NgClass } from '@angular/common';
 import { AuthService } from '../../services/auth-service/auth-service.service';
+import { NotificationsService } from '../../services/notifications-service/notifications.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ import { AuthService } from '../../services/auth-service/auth-service.service';
 export class LoginComponent implements OnDestroy {
   public router = inject(Router);
   public authService = inject(AuthService);
+  private _notificationsService = inject(NotificationsService);
 
   loginForm!: FormGroup;
   private subscriptions$ = new Subject<void>();
@@ -44,7 +46,8 @@ export class LoginComponent implements OnDestroy {
           this.loadingLoginButton.set(false);
         },
         error: (err) => {
-          console.log(err)
+          console.log(err);
+          this._notificationsService.showNotification(err);
           this.loadingLoginButton.set(false);
         }
       });
