@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeroRemovingModalComponent } from './hero-removing-modal.component';
 import { MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { inject } from '@angular/core';
 
 describe('HeroRemovingModalComponent', () => {
   let component: HeroRemovingModalComponent;

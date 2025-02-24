@@ -74,12 +74,10 @@ describe('HeroListComponent', () => {
   });
 
   it('should validate that, with a click in hero remove button, delete that hero with id=1', () => {  
-    //object that simulates that modal closes con result=true
     const fakeDialogRef = {
       afterClosed: () => from([true])
     };
 
-    //a spy to spy on modal opening
     const dialogSpy = spyOn(component.dialog, 'open').and.returnValue(fakeDialogRef as any);
 
     fixture.nativeElement.querySelector('button[aria-label="delete button"]').click();

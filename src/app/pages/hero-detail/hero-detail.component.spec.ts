@@ -7,7 +7,6 @@ import { HeroService } from '../../services/hero-service/hero.service';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FakeRouter } from '../../utils/testing/FakeRouter';
-import { FakeActivatedRoute } from '../../utils/testing/FakeActiveRoute';
 import { FakeLocation } from '../../utils/testing/FakeLocation';
 import { from, of } from 'rxjs';
 import { heroes } from '../../utils/testing/consts/ExampleHeroes';
@@ -27,9 +26,7 @@ describe('HeroDetailComponent', () => {
         HeroService,
         { provide: Router, useClass: FakeRouter },
         { provide: ActivatedRoute, useValue: {
-          // Si tu componente usa el observable params:
           params: of({ id: '1' }),
-          // O si usa el snapshot:
           snapshot: { paramMap: convertToParamMap({ id: '1' }) }
         } },
         { provide: Location, useClass: FakeLocation}

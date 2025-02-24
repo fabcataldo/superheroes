@@ -23,13 +23,11 @@ import {
 export class HeroRemovingModalComponent {
   public dialogRef = inject(MatDialogRef<HeroRemovingModalComponent>);
 
-  // 🔥 Método para cerrar el modal con confirmación
   confirmDelete(): void {
-    this.dialogRef.close(true); // Devuelve `true` para confirmar la eliminación
+    this.dialogRef.close(true);
   }
 
-  // 🔥 Método para cerrar el modal sin acción
   cancel(): void {
-    this.dialogRef.close(false); // Devuelve `false` para cancelar
+    this.dialogRef.close(false);
   }
 }

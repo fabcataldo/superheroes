@@ -59,7 +59,7 @@ export class HeroService {
 
   deleteHero(id: number): Observable<Hero> {
     return of(id).pipe(
-      delay(1000), // Simula el retraso del backend
+      delay(1000),
       switchMap(() => {
         const heroOnHeroes = this.heroes().find(h => h.id === id);
         if (!heroOnHeroes) {
