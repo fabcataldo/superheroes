@@ -20,7 +20,7 @@ describe('HeroService', () => {
 
   it('should getHeroes() work, obtaining the initial heroes', fakeAsync(() => {
     let result: Hero[] = [];
-    service.getHeroes().subscribe(data => result = data);
+    service.getHeroes(1, 5).subscribe(data => result = data.heroes);
     tick(1000);
     expect(result).toEqual(heroes);
   }));
