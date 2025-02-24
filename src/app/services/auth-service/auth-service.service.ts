@@ -2,11 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject, delay, Observable, of, switchMap, throwError } from 'rxjs';
 import { users } from '../../utils/testing/consts/ExampleUsers';
 import { User } from '../../models/user.model';
-
-export interface AuthResponse {
-  token: string;
-  email: string;
-}
+import { AuthResponse } from '../../models/auth-response.model';
 
 @Injectable({
   providedIn: 'root'
