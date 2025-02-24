@@ -5,8 +5,8 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {  ActivatedRoute, Router } from '@angular/router';
 import { HeroService } from '../../services/hero-service/hero.service';
-import { FakeRouter } from '../../utils/testing/FakeRouter';
-import { FakeActivatedRoute } from '../../utils/testing/FakeActiveRoute';
+import { FakeRouter } from '../../utils/testing/stubs/FakeRouter';
+import { FakeActivatedRoute } from '../../utils/testing/stubs/FakeActiveRoute';
 import { heroes } from '../../utils/testing/consts/ExampleHeroes';
 import { from, of } from 'rxjs';
 
@@ -46,6 +46,7 @@ describe('HeroFormComponent', () => {
     });
 
     spyOn(component.heroService, 'getHero').and.callFake(() => from([heroes[0]]));
+    spyOn(component, 'onSubmit');
 
     fixture.detectChanges();
 
@@ -68,8 +69,9 @@ describe('HeroFormComponent', () => {
       description: 'description bla bla blaa'
     });
     fixture.nativeElement.querySelector('button').click();
-
+    expect(component.onSubmit).toHaveBeenCalled();
     expect(component.heroForm.valid).toBeTruthy();
+
   });
 
 });

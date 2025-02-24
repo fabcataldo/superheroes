@@ -6,8 +6,8 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { HeroService } from '../../services/hero-service/hero.service';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { FakeRouter } from '../../utils/testing/FakeRouter';
-import { FakeLocation } from '../../utils/testing/FakeLocation';
+import { FakeRouter } from '../../utils/testing/stubs/FakeRouter';
+import { FakeLocation } from '../../utils/testing/stubs/FakeLocation';
 import { from, of } from 'rxjs';
 import { heroes } from '../../utils/testing/consts/ExampleHeroes';
 
