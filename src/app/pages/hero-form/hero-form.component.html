@@ -10,7 +10,7 @@
                     formControlName="name" appUppercase
                     [ngClass]="{'is-invalid' : heroForm.controls['name'].hasError('required')
                         && heroForm.controls['name'].touched}">
-                @if (heroForm.controls['name'].hasError('required')) {
+                @if (heroForm.controls['name'].touched && heroForm.controls['name'].hasError('required')) {
                     <span class="text-danger">You have to complete this field</span>
                 }
             </div>
@@ -21,7 +21,7 @@
                     [ngClass]="{'is-invalid' : heroForm.controls['description'].hasError('required')
                         && heroForm.controls['description'].touched
                     }"></textarea>
-                @if (heroForm.controls['description'].hasError('required')) {
+                @if (heroForm.controls['description'].touched && heroForm.controls['description'].hasError('required')) {
                     <span class="text-danger">You have to complete this field</span>
                 }
             </div>
