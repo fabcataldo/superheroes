@@ -13,7 +13,7 @@ import {
 } from '@angular/material/dialog';
 import { HeroRemovingModalComponent } from './hero-removing-modal/hero-removing-modal.component';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { NotificationsService } from '../../services/notifications-service/notifications.service';
 
 
@@ -40,10 +40,20 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   protected heroSearched = model('');
   filteredHeroes = signal<Hero[]>([]);
 
+  pageSize = signal(5);
+  currentPage = signal(0);
+  totalHeroes = signal(0);
+
   ngOnInit(): void {
     this.loading.set(true);
-    this.heroService.getHeroes().pipe(takeUntil(this.subscriptions$)).subscribe(res => {
-      this.localHeroes.set(res);
+    this.getHeroes();
+  }
+
+  private getHeroes() {
+    this.heroService.getHeroes(this.currentPage(), this.pageSize())
+    .pipe(takeUntil(this.subscriptions$)).subscribe(res => {
+      this.localHeroes.set(res.heroes);
+      this.totalHeroes.set(res.totalHeroes);
       this.updateTableDataSource();
       this.loading.set(false);
     });
@@ -85,14 +95,31 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.heroService.deleteHero(idHero).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
-          this.loading.set(true);
-          this.heroService.getHeroes().pipe(takeUntil(this.subscriptions$)).subscribe(res => {
-            this.localHeroes.set(res);
-            this.updateTableDataSource();
+        this.heroService.deleteHero(idHero).pipe(takeUntil(this.subscriptions$))
+        .subscribe({
+          next: (res) => {
+            this.loading.set(true);
+            this.heroService.getHeroes(1, this.pageSize()).pipe(takeUntil(this.subscriptions$))
+            .subscribe({
+              next: (getRes) => {
+                this.localHeroes.set(getRes.heroes);
+                this.totalHeroes.set(getRes.totalHeroes);
+                this.updateTableDataSource();
+                this.loading.set(false);
+              },
+              error: (err) => {
+                console.log(err);
+                this._notificationsService.showNotification(err, true);
+                this.loading.set(false);
+              }
+            });
+          },
+          error: (err) => {
+            console.log(err);
+            this._notificationsService.showNotification(err, true);
             this.loading.set(false);
-          });
-        });;
+          }
+        });
       }
     });
   }
@@ -140,8 +167,14 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       error: (err) => {
         console.log(err);
-        this._notificationsService.showNotification(err);
+        this._notificationsService.showNotification(err, true);
       }
     });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageSize.set(event.pageSize);
+    this.currentPage.set(event.pageIndex);
+    this.getHeroes();
   }
 }

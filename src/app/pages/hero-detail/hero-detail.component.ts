@@ -7,6 +7,7 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
+import { NotificationsService } from '../../services/notifications-service/notifications.service';
 
 @Component({
   selector: 'app-hero-detail',
@@ -20,7 +21,7 @@ export class HeroDetailComponent implements OnInit, OnDestroy {
   public heroService = inject(HeroService);
   public location = inject(Location);
   public router = inject(Router);
-
+  private _notificationsService = inject(NotificationsService);
 
   hero = signal<Hero | undefined>(undefined);
   private subscriptions$ = new Subject<void>();
@@ -36,6 +37,7 @@ export class HeroDetailComponent implements OnInit, OnDestroy {
             this.loading.set(false);
           },
           error: (err) => {
+            this._notificationsService.showNotification(err, true);
             this.loading.set(false);
           }
         });

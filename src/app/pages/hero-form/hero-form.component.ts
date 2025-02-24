@@ -8,6 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { Location } from '@angular/common';
 import { UppercaseDirective } from '../../utils/directives/uppercase.directive';
+import { NotificationsService } from '../../services/notifications-service/notifications.service';
 
 @Component({
   selector: 'app-hero-form',
@@ -21,6 +22,7 @@ export class HeroFormComponent implements OnInit, OnDestroy {
   public heroService = inject(HeroService);
   public router = inject(Router);
   public location = inject(Location);
+  private _notificationsService = inject(NotificationsService);
 
   hero = signal<Hero | undefined>(undefined);
 
@@ -80,14 +82,30 @@ export class HeroFormComponent implements OnInit, OnDestroy {
 
     if (this.heroForm.valid){
       if(this.hero()){
-        this.heroService.updateHero({...this.heroForm.value, id: this.hero()?.id}).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
-          this.loadingSubmitButton.set(false);
-          this.navigateToRoot();
+        this.heroService.updateHero({...this.heroForm.value, id: this.hero()?.id}).pipe(takeUntil(this.subscriptions$))
+        .subscribe({
+          next: (res) => {
+            this.loadingSubmitButton.set(false);
+            this._notificationsService.showNotification('Hero Updated!');
+            this.navigateToRoot();
+          },
+          error: (err) => {
+            console.log(err);
+            this._notificationsService.showNotification(err, true);
+          }
         });
       } else {
-        this.heroService.addHero(this.heroForm.value).pipe(takeUntil(this.subscriptions$)).subscribe(res => {
-          this.loadingSubmitButton.set(false);
+        this.heroService.addHero(this.heroForm.value).pipe(takeUntil(this.subscriptions$))
+        .subscribe({
+          next: (res) => {
+            this.loadingSubmitButton.set(false);
+          this._notificationsService.showNotification('Hero Created!');
           this.navigateToRoot();
+          },
+          error: (err) => {
+            console.log(err);
+            this._notificationsService.showNotification(err, true);
+          }
         });
       }
     }

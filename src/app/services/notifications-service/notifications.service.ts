@@ -7,11 +7,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class NotificationsService {
   private _snackBar: MatSnackBar = inject(MatSnackBar);
 
-  showNotification(msg: string){
+  showNotification(msg: string, isError?: boolean){
     this._snackBar.open(msg, undefined, {
       duration: 2000,
       horizontalPosition: 'center',
-      verticalPosition: 'top'
+      verticalPosition: 'top',
+      panelClass: !isError ? 'snackbar-success' : 'snackbar-error'
     });
   }
 }

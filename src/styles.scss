@@ -44,6 +44,18 @@ body {
   --min-height-spinner-container: 0 !important;
 }
 
-simple-snack-bar{
-  background-color: darkred;
+mat-snack-bar-container{
+  border-radius: 0;
+  color: white !important;
+  &.snackbar-error{
+    & .mat-mdc-snackbar-surface {
+      background: darkred;
+    }
+  }
+
+  &.snackbar-success{
+    & .mat-mdc-snackbar-surface {
+      background: darkgreen;
+    }
+  }
 }

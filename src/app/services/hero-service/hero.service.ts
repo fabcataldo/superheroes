@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Hero } from '../../models/hero.model';
 import { delay, Observable, of, switchMap, throwError } from 'rxjs';
 import { heroes } from '../../utils/testing/consts/ExampleHeroes';
-
+import { GetHeroesResponse } from '../../models/get-hero-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +14,13 @@ export class HeroService {
     return this.heroes();
   }
 
-  getHeroes(): Observable<Hero[]> {
+  getHeroes(currentPage: number, pageSize: number): Observable<GetHeroesResponse> {
     return of(this.heroes()).pipe(
       delay(1000),
-      switchMap(() => {
-        return of(this.heroes());
+      switchMap((allHeroes) => {
+        const pageStartIdx = currentPage * pageSize;
+        const pageEndIdx = pageStartIdx + pageSize;
+        return of({heroes: allHeroes.slice(pageStartIdx, pageEndIdx), totalHeroes: heroes.length});
       })
     );
   }

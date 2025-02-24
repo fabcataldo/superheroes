@@ -47,7 +47,7 @@ export class LoginComponent implements OnDestroy {
         },
         error: (err) => {
           console.log(err);
-          this._notificationsService.showNotification(err);
+          this._notificationsService.showNotification(err, true);
           this.loadingLoginButton.set(false);
         }
       });
