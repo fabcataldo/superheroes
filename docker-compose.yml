@@ -17,6 +17,8 @@ services:
       - "4200:4200"
 
     #sincronize files between host (localhost, this case) and container
+    #this is for letting updated host code be reflected automatically in the container,
+    #without rebuilding it
     volumes:
       - .:/usr/app
       - /usr/app/node_modules
