@@ -14,6 +14,7 @@ import {
 import { HeroRemovingModalComponent } from './hero-removing-modal/hero-removing-modal.component';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { NotificationsService } from '../../services/notifications-service/notifications.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   public router = inject(Router);
   dialog = inject(MatDialog);
   heroService: HeroService = inject(HeroService);
+  private _notificationsService = inject(NotificationsService);
   localHeroes = signal<Hero[]>([]);
   displayedColumns: string[] = ['name', 'power', 'actions'];
   loading = signal(true);
@@ -138,6 +140,7 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       error: (err) => {
         console.log(err);
+        this._notificationsService.showNotification(err);
       }
     });
   }
