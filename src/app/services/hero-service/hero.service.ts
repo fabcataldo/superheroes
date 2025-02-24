@@ -20,7 +20,8 @@ export class HeroService {
       switchMap((allHeroes) => {
         const pageStartIdx = currentPage * pageSize;
         const pageEndIdx = pageStartIdx + pageSize;
-        return of({heroes: allHeroes.slice(pageStartIdx, pageEndIdx), totalHeroes: heroes.length});
+        const allHeroesSlice = allHeroes.slice(pageStartIdx, pageEndIdx);
+        return of({heroes: allHeroesSlice, totalHeroes: this.heroes().length});
       })
     );
   }
@@ -31,6 +32,7 @@ export class HeroService {
       switchMap(hero => {
         const newHero = { ...hero, id: this.heroes().length + 1 };
         this.heroes.update(current => [...current, newHero]);
+
         return of(hero);
       })
     );
@@ -86,15 +88,20 @@ export class HeroService {
     );
   }
 
-  getFilteredHeroesByText(text: string, currentPage: number, pageSize: number): Observable<Hero[]> {
+  getFilteredHeroesByText(text: string, currentPage: number, pageSize: number): Observable<GetHeroesResponse> {
     return of(text).pipe(
       delay(1000),
       switchMap(() => {
         const localHeroes = this.heroes();
         const pageStartIdx = currentPage * pageSize;
         const pageEndIdx = pageStartIdx + pageSize;
+        const filteredHeroes = localHeroes.slice(pageStartIdx, pageEndIdx).filter(hero => hero.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()));
+
         return of(
-          localHeroes.slice(pageStartIdx, pageEndIdx).filter(hero => hero.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()))
+          {
+            heroes: filteredHeroes,
+            totalHeroes: filteredHeroes.length
+          }
         );
       })
     );
