@@ -43,6 +43,9 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   pageSize = signal(5);
   currentPage = signal(0);
   totalHeroes = signal(0);
+  backupedPageSize = signal(0);
+  backupedCurrentPage = signal(0);
+  backupedTotalHeroes = signal(0);
 
   ngOnInit(): void {
     this.loading.set(true);
@@ -55,6 +58,11 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
       this.localHeroes.set(res.heroes);
       this.totalHeroes.set(res.totalHeroes);
       this.updateTableDataSource();
+
+      this.backupedPageSize.set(this.pageSize());
+      this.backupedCurrentPage.set(this.currentPage());
+      this.backupedTotalHeroes.set(this.totalHeroes());
+
       this.loading.set(false);
     });
   }
@@ -160,22 +168,42 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   applyFilter(): void {
-    this.heroService.getFilteredHeroesByText(this.heroSearched(), this.currentPage(), this.pageSize()).pipe(takeUntil(this.subscriptions$)).subscribe({
-      next: (res) => {
-        this.filteredHeroes.set(res.heroes);
-        this.pageSize.set(res.totalHeroes);
-        this.updateTableDataSource(true);
-      },
-      error: (err) => {
-        console.log(err);
-        this._notificationsService.showNotification(err, true);
-      }
-    });
+    if(!this.heroSearched().length){
+      this.pageSize.set(this.backupedPageSize());
+      this.currentPage.set(this.backupedCurrentPage());
+      this.totalHeroes.set(this.backupedTotalHeroes());
+      this.updateTableDataSource();
+    } else {
+      this.heroService.getFilteredHeroesByText(
+        this.heroSearched(),
+        this.pageSize(),
+        this.currentPage()
+      ).pipe(takeUntil(this.subscriptions$)).subscribe({
+        next: (res) => {
+          this.filteredHeroes.set(res.heroes);
+          this.pageSize.set(res.totalHeroes);
+          this.currentPage.set(res.currentPage);
+          this.totalHeroes.set(res.totalHeroes);
+          this.updateTableDataSource(true);
+        },
+        error: (err) => {
+          console.log(err);
+          this._notificationsService.showNotification(err, true);
+        }
+      });
+    }
+
   }
 
   onPageChange(event: PageEvent) {
     this.pageSize.set(event.pageSize);
     this.currentPage.set(event.pageIndex);
-    this.getHeroes();
+    this.totalHeroes.set(event.length);
+    if(!!this.heroSearched().length) {
+      this.applyFilter();
+    } else {
+      this.getHeroes();
+    }
+    
   }
 }

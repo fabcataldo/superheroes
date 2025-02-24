@@ -3,6 +3,7 @@ import { Hero } from '../../models/hero.model';
 import { delay, Observable, of, switchMap, throwError } from 'rxjs';
 import { heroes } from '../../utils/testing/consts/ExampleHeroes';
 import { GetHeroesResponse } from '../../models/get-hero-response.model';
+import { GetFilteredHeroesByTextResponse } from '../../models/get-filtered-heroes-by-text-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -88,19 +89,25 @@ export class HeroService {
     );
   }
 
-  getFilteredHeroesByText(text: string, currentPage: number, pageSize: number): Observable<GetHeroesResponse> {
+  getFilteredHeroesByText(
+    text: string,
+    pageSize: number,
+    currentPage: number
+  ): Observable<GetFilteredHeroesByTextResponse> {
     return of(text).pipe(
       delay(1000),
       switchMap(() => {
-        const localHeroes = this.heroes();
         const pageStartIdx = currentPage * pageSize;
         const pageEndIdx = pageStartIdx + pageSize;
-        const filteredHeroes = localHeroes.slice(pageStartIdx, pageEndIdx).filter(hero => hero.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()));
+
+        const filteredHeroes = this.heroes().filter(hero => hero.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()));
 
         return of(
           {
-            heroes: filteredHeroes,
-            totalHeroes: filteredHeroes.length
+            heroes: filteredHeroes.slice(pageStartIdx, pageEndIdx),
+            totalHeroes: filteredHeroes.length,
+            pageSize: filteredHeroes.length,
+            currentPage
           }
         );
       })
