@@ -1,6 +1,6 @@
 # Superhero Angular App
 
-Superhero Angular App es una aplicación en Angular 18 diseñada para gestionar información sobre superhéroes. Se ejecuta en un entorno Dockerizado para facilitar la configuración y despliegue.
+Superhero Angular App es una aplicación en Angular 19 diseñada para gestionar información sobre superhéroes. Se ejecuta en un entorno Dockerizado para facilitar la configuración y despliegue.
 
 ## Características
 - Aplicación frontend desarrollada con **Angular 19**.
