@@ -33,6 +33,7 @@ git clone https://github.com/tu-usuario/superhero-angular-app.git
 cd superhero-angular-app
 ```
 ### 3 **Ejecución**
+Primero "levantar" el entorno de Docker, y luego ejecutar por terminal:
 ```sh
 docker-compose up --build
 ```
