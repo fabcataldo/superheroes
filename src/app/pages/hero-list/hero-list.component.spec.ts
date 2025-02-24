@@ -44,7 +44,7 @@ describe('HeroListComponent', () => {
     component.subscriptions$ = new Subject<void>();
 
     spyOn(component, 'updateTableDataSource').and.callThrough();
-    spyOn(component.heroService, 'getHeroes').and.callFake(() => from([heroes]));
+    spyOn(component.heroService, 'getHeroes').and.callFake(() => from([{heroes, totalHeroes: heroes.length}]));
     spyOn(component, 'goToDetailPage').and.callThrough();
     spyOn(component.router, 'navigate').and.callThrough();
     spyOn(component, 'showDeleteModal').and.callThrough();

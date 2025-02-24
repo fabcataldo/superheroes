@@ -91,7 +91,7 @@ export class HeroService {
       delay(1000),
       switchMap(() => {
         const localHeroes = this.heroes();
-        return of(localHeroes.filter(hero => hero.name.toLocaleLowerCase().includes(text)));
+        return of(localHeroes.filter(hero => hero.name.toLocaleLowerCase().includes(text.toLocaleLowerCase())));
       })
     );
   }

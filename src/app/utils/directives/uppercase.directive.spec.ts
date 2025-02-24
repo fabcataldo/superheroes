@@ -21,7 +21,7 @@ describe('UppercaseDirective', () => {
   it('should change input text to uppercase on input event', fakeAsync(() => {
     inputElement.value = 'testvalue';
     directive.ngAfterViewInit();
-    tick();
+    tick(1000);
     expect(inputElement.value).toBe('TESTVALUE');
   }));
 });
