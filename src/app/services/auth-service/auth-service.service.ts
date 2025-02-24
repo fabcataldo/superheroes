@@ -49,24 +49,6 @@ export class AuthService {
     );
   }
 
-  register(username: string, email: string, password: string): Observable<AuthResponse> {
-    const userInDB = this.usersDB().some(user => user.email === email);
-    return of(null).pipe(
-      delay(1000),
-      switchMap(() => {
-        if(userInDB) {
-          return throwError(() => new Error('User Exists'));
-        }
-
-        this.usersDB.update(currentUsers => [...currentUsers, {email, username, password, id: crypto.randomUUID()}]);
-        const response: AuthResponse = {token: 'fake-token', email};
-        localStorage.setItem('currentUser', JSON.stringify(response));
-        this.currentUserSubject.next(response);
-        return of(response);
-      })
-    )
-  }
-
   get currentUserValue(): AuthResponse | null {
     return this.currentUserSubject.value;
   }
