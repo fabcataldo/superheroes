@@ -160,7 +160,7 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   applyFilter(): void {
-    this.heroService.getFilteredHeroesByText(this.heroSearched()).pipe(takeUntil(this.subscriptions$)).subscribe({
+    this.heroService.getFilteredHeroesByText(this.heroSearched(), this.currentPage(), this.pageSize()).pipe(takeUntil(this.subscriptions$)).subscribe({
       next: (res) => {
         this.filteredHeroes.set(res);
         this.updateTableDataSource(true);

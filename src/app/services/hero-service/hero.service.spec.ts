@@ -58,7 +58,7 @@ describe('HeroService', () => {
 
   it('should getFilteredHeroesByText() work, getting heroes filtering by text=sup ', fakeAsync(() => {
     let result: Hero[] = [];
-    service.getFilteredHeroesByText('Black Panther').subscribe(data => result = data);
+    service.getFilteredHeroesByText('Black Panther', 0, 100).subscribe(data => result = data);
     tick(1000);
     expect(result.length).toBeGreaterThan(0);
   }));

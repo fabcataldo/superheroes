@@ -86,12 +86,16 @@ export class HeroService {
     );
   }
 
-  getFilteredHeroesByText(text: string): Observable<Hero[]> {
+  getFilteredHeroesByText(text: string, currentPage: number, pageSize: number): Observable<Hero[]> {
     return of(text).pipe(
       delay(1000),
       switchMap(() => {
         const localHeroes = this.heroes();
-        return of(localHeroes.filter(hero => hero.name.toLocaleLowerCase().includes(text.toLocaleLowerCase())));
+        const pageStartIdx = currentPage * pageSize;
+        const pageEndIdx = pageStartIdx + pageSize;
+        return of(
+          localHeroes.slice(pageStartIdx, pageEndIdx).filter(hero => hero.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()))
+        );
       })
     );
   }
