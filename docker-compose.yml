@@ -27,7 +27,8 @@ services:
     #I use 0.0.0.0 because of Angular in development environment, only listens on localhost
     #in this case, inside the container, and does not allow external conections
     #this is NOT allowed in production
-    command: "npm start -- --host 0.0.0.0 --disable-host-check"
+    #this is only for this project, for testing
+    command: "ng serve --host 0.0.0.0 --port 4200"
 
     #maintains container open forever
     stdin_open: true
