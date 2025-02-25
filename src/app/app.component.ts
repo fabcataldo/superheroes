@@ -15,11 +15,6 @@ export class AppComponent implements OnDestroy{
   public authService = inject(AuthService);
   public router = inject(Router);
   private subscriptions$ = new Subject<void>();
-  menuOption: string = '';
-
-  onOption(menuOption: string) {
-    this.menuOption = menuOption
-  }
 
   ngOnDestroy(): void {
     this.subscriptions$.next();
