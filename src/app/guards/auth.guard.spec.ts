@@ -32,6 +32,8 @@ describe('authGuard', () => {
   it('should allow route activation if the user is authenticated', () => {
     authServiceStubValue.currentUserValue = {id: 1, name: 'fake user'};
     const result = TestBed.runInInjectionContext(() => authGuard(dummyActivatedRouteSnapshotStubValue, dummyRouterStateStubValue));
+    console.log('authServiceStubValue')
+    console.log(authServiceStubValue)
     expect(result).toBeTrue();
     expect(routerStubValue.navigate).not.toHaveBeenCalled();
   })

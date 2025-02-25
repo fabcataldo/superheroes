@@ -37,7 +37,7 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
   loading = signal(true);
   subscriptions$ = new Subject<void>();
   dataSource = new MatTableDataSource<Hero>([]);
-  protected heroSearched = model('');
+  heroSearched = model('');
   filteredHeroes = signal<Hero[]>([]);
 
   pageSize = signal(5);
@@ -52,7 +52,7 @@ export class HeroListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getHeroes();
   }
 
-  private getHeroes() {
+  getHeroes() {
     this.heroService.getHeroes(this.currentPage(), this.pageSize())
     .pipe(takeUntil(this.subscriptions$)).subscribe(res => {
       this.localHeroes.set(res.heroes);

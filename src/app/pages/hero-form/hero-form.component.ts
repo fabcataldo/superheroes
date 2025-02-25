@@ -111,7 +111,6 @@ export class HeroFormComponent implements OnInit, OnDestroy {
     }
     else {
       this.heroForm.markAllAsTouched();
-      console.error('Invalid form');
     }
   }
 
@@ -120,10 +119,6 @@ export class HeroFormComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    if (window.history.length > 1) {
-      this.location.back();
-    } else {
-      this.router.navigate(['/']);
-    }
+    this.router.navigate(['/']);
   }
 }
